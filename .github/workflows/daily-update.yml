@@ -1,0 +1,58 @@
+name: Daily Update Main Script
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 13 * * *"   # 北京时间 21:00 = UTC 13:00
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-update-main
+  cancel-in-progress: true
+
+jobs:
+  run-main:
+    runs-on: ubuntu-latest
+
+    env:
+      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+      RECIPIENTS_str: ${{ secrets.RECIPIENTS_str }}
+      GOOGLE_EMAIL_APP_PASSWORD: ${{ secrets.GOOGLE_EMAIL_APP_PASSWORD }}
+      TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Run script
+        run: python "惠特尼乔治_代码_更新_main.py"
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Automated update via GitHub Actions"
+          git push

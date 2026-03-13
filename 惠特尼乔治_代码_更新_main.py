@@ -26,7 +26,7 @@ if not os.path.exists(data_path):
 os.chdir(data_path)
 
 # 设置 Token
-tu.set_token('4dfe55ae66614ca943e09a6d82339eb65b77dcaf327841ba3d5c1574')
+tu.set_token(pw.TUSHARE_TOKEN)
 pro = tu.pro_api()
 
 # --- 全局时间参数 ---

@@ -15,3 +15,5 @@ RECIPIENTS = [
 ]
 
 google_email_app_password = _require_env("GOOGLE_EMAIL_APP_PASSWORD")
+
+TUSHARE_TOKEN = _require_env("TUSHARE_TOKEN")
