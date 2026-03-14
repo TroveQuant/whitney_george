@@ -40,7 +40,7 @@ def get_financial_dates(today_str):
     逻辑: data_end1 为当前季度往前推 2 个季度的季度末
     """
     current_dt = pd.to_datetime(today_str)
-    current_quarter = pd.Period(current_dt, freq='QE')
+    current_quarter = pd.Period(current_dt, freq='Q')
     target_quarter = current_quarter - 2
     d1_date = target_quarter.end_time.date()
     # data_end2 (data_end1 + 1年)
