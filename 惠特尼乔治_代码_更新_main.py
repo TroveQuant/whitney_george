@@ -1027,8 +1027,8 @@ if __name__ == "__main__":
     print('============================================')
     print('总用时（包括数据更新）：{}'.format(time.strftime("%H 时 %M 分 %S 秒", time.gmtime(end_time - begin_time))))
 
-    HTML_PATH = "/Users/guangdafei/PythonProjects/量化/崇文/惠特尼乔治2026/data/results.html"  # 如有问题可以改成absolute path
-    # HTML_PATH = "data/results.html"
+    # HTML_PATH = "/Users/guangdafei/PythonProjects/量化/崇文/惠特尼乔治2026/data/results.html"  # 如有问题可以改成absolute path
+    HTML_PATH = "data/results.html"
     try:
         with open(HTML_PATH, "r", encoding="utf-8") as f:
             HTML_BODY = f.read()
