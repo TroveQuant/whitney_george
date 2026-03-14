@@ -638,7 +638,7 @@ def run(initial_capital, start_date, end_date, data_start, data_end2, method='�
     
     # 净值计算
     portfolio.capital = pd.Series(portfolio.capital)
-    portfolio.nv = (portfolio.capital.iloc[1:] / initial_capital).reindex(trade_day).fillna(method='ffill').fillna(1.0)
+    portfolio.nv = (portfolio.capital.iloc[1:] / initial_capital).reindex(trade_day).ffill().fillna(1.0)
     portfolio.nv.name = '净值'
     portfolio.ret = portfolio.nv.pct_change().fillna(0)
     
@@ -728,7 +728,7 @@ def generate_daily_report(portfolio, close_1d, hs300_full, zz500_full):
     today_str = nv.index[-1]
     prev_day_str = nv.index[-2] if len(nv) > 1 else today_str
     
-    bench_hs300 = hs300_full.reindex(nv.index).fillna(method='ffill')
+    bench_hs300 = hs300_full.reindex(nv.index).ffill()
     
     print(f"\n【1 & 2. 持仓信息与今日表现】 (日期: {today_str})")
     print(f"策略今日净值: {nv.iloc[-1]:.4f} | 今日涨跌幅: {(nv.iloc[-1]/nv.iloc[-2]-1)*100:.2f}%")
