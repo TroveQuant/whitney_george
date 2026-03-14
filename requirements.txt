@@ -4,3 +4,4 @@ pandas
 tinyshare
 tqdm
 pyarrow
+openpyxl
