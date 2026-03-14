@@ -40,7 +40,7 @@ def get_financial_dates(today_str):
     逻辑: data_end1 为当前季度往前推 2 个季度的季度末
     """
     current_dt = pd.to_datetime(today_str)
-    current_quarter = pd.Period(current_dt, freq='Q')
+    current_quarter = pd.Period(current_dt, freq='QE')
     target_quarter = current_quarter - 2
     d1_date = target_quarter.end_time.date()
     # data_end2 (data_end1 + 1年)
@@ -58,7 +58,7 @@ global dates_1d, dates_1q, trade_day, stk_remain_df, info_dfs
 
 dates_1d = pd.date_range(start=data_start, end=today).date
 dates_1d = [d.strftime('%Y%m%d') for d in dates_1d]
-dates_1q = pd.date_range(start=data_start, end=today, freq='q').date
+dates_1q = pd.date_range(start=data_start, end=today, freq='QE').date
 dates_1q = [d.strftime('%Y%m%d') for d in dates_1q]
 
 # 获取并保存交易日历
@@ -180,7 +180,7 @@ def download_latest_data(today, data_end1):
         try:
             dates = pd.date_range(start=start_check, end=data_end1, freq='QE')
         except:
-            dates = pd.date_range(start=start_check, end=data_end1, freq='Q')
+            dates = pd.date_range(start=start_check, end=data_end1, freq='QE')
             
         missing_quarters = [d.strftime('%Y%m%d') for d in dates if d.strftime('%Y%m%d') > start_check]
         
@@ -407,7 +407,7 @@ def select_stocks(start_date, end_date, method, param=Param()):
     # --- 策略分支 ---
     def select_by_hc(start_date,end_date, total_mv_high, debt_to_eqt_high, roa_low, roic_low,
              pb_high, pe_high, ps_high, close_high, dv_ratio_low, lmt):
-        dates = pd.date_range(start=start_date, end=end_date, freq='1q').date
+        dates = pd.date_range(start=start_date, end=end_date, freq='QE').date
         dates = [d.strftime('%Y%m%d') for d in dates]
 
         total_mv_df = total_mv(info_dfs['total_mv'], low=-info_dfs['total_mv'].max().max(), high=0).reindex(dates)
@@ -424,7 +424,7 @@ def select_stocks(start_date, end_date, method, param=Param()):
     
     def select_by_strg(start_date, end_date, total_mv_high, debt_to_eqt_high, roa_low, roic_low,
              pb_high, pe_high, ps_high, close_high, dv_ratio_low, lmt):
-        dates = pd.date_range(start=start_date, end=end_date, freq='1q').date
+        dates = pd.date_range(start=start_date, end=end_date, freq='QE').date
         dates = [d.strftime('%Y%m%d') for d in dates]
            
         total_mv_df = total_mv(info_dfs['total_mv'], low=0, high=total_mv_high, bench_market=False).reindex(dates)
@@ -551,7 +551,7 @@ def run(initial_capital, start_date, end_date, data_start, data_end2, method='�
     trade_day = sorted(set(trade_day).intersection(set(trade_start_end)))
 
     # 季度调仓日期
-    rebalance_day = pd.date_range(start=data_start, end=data_end2, freq='1q').date
+    rebalance_day = pd.date_range(start=data_start, end=data_end2, freq='QE').date
     rebalance_day = [d.strftime('%Y%m%d') for d in rebalance_day]
     cnt = 0
 
